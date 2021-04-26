@@ -1,0 +1,56 @@
+﻿<controls:MetroContentControl x:Class="JobNotificationsClient.Views.JobView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:converters="clr-namespace:JobNotificationsClient.Infrastructure.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="800">
+    <controls:MetroContentControl.Resources>
+        <converters:StatusToColorConverter x:Key="statusToColorConverter" />
+        <Style TargetType="{x:Type DataGridCell}">
+            <Setter Property="Background" Value ="{Binding JobStatus, Converter={StaticResource statusToColorConverter}}" />
+        </Style>
+    </controls:MetroContentControl.Resources>
+
+    <GroupBox  BorderBrush="Transparent" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <DockPanel VerticalAlignment="Center" LastChildFill="False" IsEnabled="{Binding IsNotBusy}" >
+                <Button DockPanel.Dock="Left" x:Name="StartJobs"   IsEnabled="{Binding CanStart,UpdateSourceTrigger=PropertyChanged}"  Width="85" Margin="2,0">Start</Button>                
+            </DockPanel>
+            <DataGrid x:Name="JobNotifications" 
+              Grid.Row="1"              
+              AutoGenerateColumns="False" 
+              CanUserAddRows="false"
+              IsReadOnly="true"
+              FontSize="12"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch"
+              BorderBrush="Gray" BorderThickness="1" Padding="2"
+               >
+
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Notifications" ></MenuItem>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+
+                <DataGrid.Columns>                   
+                    <DataGridTextColumn Binding="{Binding JobId}" Width="400" Header="Job Id" />
+                    <DataGridTextColumn Binding="{Binding JobStatus}" Width="400"  Header="Status" />
+                    <DataGridTextColumn Binding="{Binding Timestamp}" Width="400"  Header="Timestamp" />
+                </DataGrid.Columns>
+
+            </DataGrid>
+
+        </Grid>
+
+    </GroupBox>
+</controls:MetroContentControl>
